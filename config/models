@@ -1,0 +1,22 @@
+-- CORE: The core models, nothing will work without these.
+
+-- | Well, users are just users, but in our case they
+--   are the merchants.
+User json
+    email Text
+    password Text Maybe
+    verKey Text Maybe
+    verified Bool
+    created UTCTime Maybe default=now()
+    UniqueUser email
+  deriving Typeable Show
+
+-- | Main method of authentication, store multiple API keys
+--   per user.
+ApiKey json
+    value Text
+    userId UserId
+    UniqueApiKey value
+  deriving Show
+
+ -- By default this file is used in Model.hs (which is imported by Foundation.hs)

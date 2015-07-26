@@ -1,0 +1,4 @@
+app-is-testing: true
+should-log-all: false
+database:
+  database: "test_database_name"

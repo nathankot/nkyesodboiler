@@ -1,0 +1,187 @@
+name:              server
+version:           0.0.0
+cabal-version:     >= 1.8
+build-type:        Simple
+
+Flag dev
+    Description:   Turn on development settings, like auto-reload templates.
+    Default:       False
+
+Flag library-only
+    Description:   Build for use with "yesod devel"
+    Default:       False
+
+library
+    hs-source-dirs: ., app
+    exposed-modules: Application
+                     Foundation
+                     Import
+                     Import.NoFoundation
+                     Import.Aws
+                     Model
+                     Model.Extension
+                     Model.User
+                     Model.ApiKey
+                     Model.Order
+                     Model.Stock
+                     Model.StockImage
+                     Model.Types
+                     Settings
+                     Settings.StaticFiles
+                     Handler.Extension
+                     Handler.Home
+                     Handler.Sessions
+                     Handler.Users
+                     Handler.Stocks
+                     Handler.Stock
+                     Handler.StockImages
+                     Mail
+
+    if flag(dev) || flag(library-only)
+        cpp-options:   -DDEVELOPMENT
+        ghc-options:   -Wall -fwarn-tabs -O0 -fno-warn-orphans 
+    else
+        ghc-options:   -Wall -fwarn-tabs -O2 -fno-warn-orphans
+
+    extensions: TemplateHaskell
+                QuasiQuotes
+                OverloadedStrings
+                NoImplicitPrelude
+                CPP
+                MultiParamTypeClasses
+                TypeFamilies
+                GADTs
+                GeneralizedNewtypeDeriving
+                FlexibleContexts
+                FlexibleInstances
+                EmptyDataDecls
+                NoMonomorphismRestriction
+                DeriveDataTypeable
+                ViewPatterns
+                TupleSections
+                RecordWildCards
+
+    build-depends: aeson                         >= 0.6        && < 0.9
+                 , aws
+                 , base                          >= 4          && < 5
+                 , bytestring                    >= 0.9        && < 0.11
+                 , classy-prelude                >= 0.10.2
+                 , classy-prelude-conduit        >= 0.10.2
+                 , classy-prelude-yesod          >= 0.10.2
+                 , conduit                       >= 1.0        && < 2.0
+                 , conduit-extra
+                 , containers
+                 , connection
+                 , data-default
+                 , directory                     >= 1.1        && < 1.3
+                 , esqueleto
+                 , fast-logger                   >= 2.2        && < 2.4
+                 , file-embed
+                 , filepath
+                 , hjsmin                        >= 0.1        && < 0.2
+                 , http-conduit                  >= 2.1        && < 2.2
+                 , http-types
+                 , load-env
+                 , mime-mail
+                 , mime-types
+                 , mtl
+                 , monad-control                 >= 0.3        && < 1.1
+                 , monad-logger                  >= 0.3        && < 0.4
+                 , network
+                 , persistent                    >= 2.0        && < 2.2
+                 , persistent-postgresql         >= 2.1.1      && < 2.2
+                 , persistent-template           >= 2.0        && < 2.2
+                 , random
+                 , safe
+                 , shakespeare                   >= 2.0        && < 2.1
+                 , smtp-mail
+                 , template-haskell
+                 , text                          >= 0.11       && < 2.0
+                 , time
+                 , transformers
+                 , either
+                 , email-validate
+                 , unordered-containers
+                 , vector
+                 , wai
+                 , wai-extra                     >= 3.0        && < 3.1
+                 , wai-logger                    >= 2.2        && < 2.3
+                 , warp                          >= 3.0        && < 3.1
+                 , yaml                          >= 0.8        && < 0.9
+                 , yesod                         >= 1.4.1      && < 1.5
+                 , yesod-auth                    >= 1.4.0      && < 1.5
+                 , yesod-core                    >= 1.4.6      && < 1.5
+                 , yesod-form                    >= 1.4.0      && < 1.5
+                 , yesod-static                  >= 1.4.0.3    && < 1.5
+
+executable         server
+    if flag(library-only)
+        Buildable: False
+
+    main-is:           main.hs
+    hs-source-dirs:    app
+    build-depends:     base, server
+
+    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
+
+test-suite test
+    type:              exitcode-stdio-1.0
+    main-is:           Spec.hs
+    hs-source-dirs:    test
+    ghc-options:       -Wall
+
+    extensions: TemplateHaskell
+                QuasiQuotes
+                OverloadedStrings
+                NoImplicitPrelude
+                CPP
+                MultiParamTypeClasses
+                TypeFamilies
+                GADTs
+                GeneralizedNewtypeDeriving
+                FlexibleContexts
+                EmptyDataDecls
+                NoMonomorphismRestriction
+                DeriveDataTypeable
+                ViewPatterns
+                TupleSections
+
+    other-modules: TestExtension
+                 , TestFactory
+                 , TestImport
+                 , Model.ApiKeySpec
+                 , Model.UserSpec
+                 , Handler.SessionsSpec
+                 , Handler.StockImagesSpec
+                 , Handler.StockSpec
+                 , Handler.StocksSpec
+                 , Handler.UsersSpec
+
+    build-depends: base
+                 , blaze-builder
+                 , containers
+                 , server
+                 , text
+                 , http-types
+                 , bytestring
+                 , yesod-test >= 1.4.3 && < 1.5
+                 , yesod-core
+                 , yesod-persistent
+                 , yesod
+                 , yesod-auth
+                 , wai
+                 , wai-extra
+                 , persistent
+                 , persistent-postgresql
+                 , resourcet
+                 , monad-logger
+                 , network
+                 , shakespeare
+                 , transformers
+                 , hspec >= 2.0.0
+                 , HUnit
+                 , classy-prelude
+                 , classy-prelude-yesod
+                 , aeson
+                 , unordered-containers
+                 , random

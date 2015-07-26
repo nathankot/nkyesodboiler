@@ -1,0 +1,4 @@
+/ HomeR GET
+
+/api/session SessionsR POST DELETE
+/api/user UsersR POST

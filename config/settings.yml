@@ -1,0 +1,42 @@
+# Values formatted like "_env:ENV_VAR_NAME:default_value" can be overridden by the specified environment variable.
+# See https://github.com/yesodweb/yesod/wiki/Configuration#overriding-configuration-values-with-environment-variables
+
+host:                    "_env:HOST:*4" # any IPv4 host
+port:                    "_env:PORT:3000"
+app-root:                "_env:APP_ROOT:http://localhost:3000"
+ip-from-header:          "_env:IP_FROM_HEADER:false"
+
+app-is-testing: false
+
+smtp-host:               "_env:SMTP_HOST:localhost"
+smtp-user:               "_env:SMTP_USER"
+smtp-password:           "_env:SMTP_PASSWORD"
+smtp-port:               "_env:SMTP_PORT:25"
+
+aws-key:                 "_env:AWS_KEY"
+aws-secret:              "_env:AWS_SECRET"
+aws-bucket:              "_env:AWS_BUCKET"
+aws-endpoint:            "_env:AWS_ENDPOINT:s3.amazonaws.com"
+aws-port:                "_env:AWS_PORT"
+aws-location-constraint: "_env:AWS_LOCATION_CONSTRAINT:us-west"
+aws-verify-certificate:  "_env:AWS_VERIFY_CERTIFICATE:true"
+
+# Optional values with the following production defaults.
+# In development, they default to the inverse.
+#
+# development: false
+# detailed-logging: false
+# should-log-all: false
+# reload-templates: false
+# skip-combining: false
+
+database:
+  user:     "_env:PG_USER:server"
+  password: "_env:PG_PASS:server"
+  host:     "_env:PG_HOST:localhost"
+  port:     "_env:PG_PORT:5432"
+  database: "_env:PG_DATABASE:databasename"
+  poolsize: "_env:PG_POOLSIZE:10"
+
+copyright: Insert copyright statement here
+#analytics: UA-YOURCODE

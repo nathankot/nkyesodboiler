@@ -1,0 +1,14 @@
+dist/
+cabal-dev/
+yesod-devel/
+static/tmp/
+static/combined/
+config/client_session_key.aes
+*.hi
+*.o
+*.sqlite3
+.hsenv*
+.cabal-sandbox
+cabal.sandbox.config
+.DS_Store
+*.swp
