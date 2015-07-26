@@ -22,24 +22,17 @@ library
                      Model.Extension
                      Model.User
                      Model.ApiKey
-                     Model.Order
-                     Model.Stock
-                     Model.StockImage
-                     Model.Types
                      Settings
                      Settings.StaticFiles
                      Handler.Extension
                      Handler.Home
                      Handler.Sessions
                      Handler.Users
-                     Handler.Stocks
-                     Handler.Stock
-                     Handler.StockImages
                      Mail
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
-        ghc-options:   -Wall -fwarn-tabs -O0 -fno-warn-orphans 
+        ghc-options:   -Wall -fwarn-tabs -O0 -fno-warn-orphans
     else
         ghc-options:   -Wall -fwarn-tabs -O2 -fno-warn-orphans
 
@@ -150,11 +143,7 @@ test-suite test
                  , TestFactory
                  , TestImport
                  , Model.ApiKeySpec
-                 , Model.UserSpec
                  , Handler.SessionsSpec
-                 , Handler.StockImagesSpec
-                 , Handler.StockSpec
-                 , Handler.StocksSpec
                  , Handler.UsersSpec
 
     build-depends: base
