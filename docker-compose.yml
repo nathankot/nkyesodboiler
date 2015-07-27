@@ -1,0 +1,31 @@
+database:
+  build: database
+  environment:
+    POSTGRES_DB: dbname
+    POSTGRES_USER: server
+    POSTGRES_PASSWORD: random123
+  ports:
+    - "5432:5432" # So we can access from the host machine
+
+maildev:
+  image: djfarrelly/maildev
+  ports:
+    - "1080:80" # So the host can view dev emails
+    - "25:25" # So we can use this from the host machine
+
+server:
+  build: server
+  environment:
+    PG_PORT: 5432
+    PG_HOST: database
+    PG_DATABASE: dbname
+    PG_USER: server
+    PG_PASS: random123
+    SMTP_HOST: maildev
+    SMTP_PORT: 25
+    PORT: 80
+  links:
+    - database
+    - maildev
+  ports:
+    - "3000:80"
