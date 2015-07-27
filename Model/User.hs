@@ -1,6 +1,5 @@
 module Model.User
-( createAccountForUser
-, createUser
+( createUser
 , checkPasswordSecurity
 ) where
 

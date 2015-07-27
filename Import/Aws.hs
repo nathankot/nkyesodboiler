@@ -6,15 +6,17 @@ module Import.Aws
        , s3ObjectPathFromSettings
        ) where
 
-import           Aws                   as Import
-import           Aws.Core              as Import (Protocol (..), defaultPort)
-import qualified Aws.S3                as S3
+import           Aws                       as Import
+import           Aws.Core                  as Import (Protocol (..),
+                                                      defaultPort)
+import qualified Aws.S3                    as S3
 import           ClassyPrelude.Yesod
-import qualified Data.ByteString.Char8 as B
-import qualified Data.Text             as T (pack)
-import qualified Data.Text.Encoding    as T (encodeUtf8)
-import           Network.Connection    (TLSSettings (..))
-import           Network.HTTP.Conduit  (mkManagerSettings)
+import           Control.Monad.Trans.Maybe
+import qualified Data.ByteString.Char8     as B
+import qualified Data.Text                 as T (pack)
+import qualified Data.Text.Encoding        as T (encodeUtf8)
+import           Network.Connection        (TLSSettings (..))
+import           Network.HTTP.Conduit      (mkManagerSettings)
 import           Settings
 
 configurationFromSettings :: MonadIO io
@@ -22,7 +24,7 @@ configurationFromSettings :: MonadIO io
                              -> io (Maybe Configuration)
 configurationFromSettings s = liftIO $ runMaybeT $ do
   accessKeyId <- MaybeT $ return $ T.encodeUtf8 . T.pack <$> awsKey s
-  secretAccessKey = MaybeT $ return $ T.encodeUtf8 . T.pack <$> awsSecret s
+  secretAccessKey <- MaybeT $ return $ T.encodeUtf8 . T.pack <$> awsSecret s
   cr <- makeCredentials accessKeyId  secretAccessKey
   return Configuration { timeInfo = Timestamp
                        , credentials = cr
@@ -44,8 +46,8 @@ s3SettingsFromSettings s = (S3.s3 HTTPS (B.pack $ awsEndpoint s) False)
 -- | Get path to a given object name using the current bucket and endpoint
 --   specified in app settings. This DOES NOT include a protocol.
 s3ObjectPathFromSettings :: AppSettings -> String -> Maybe String
-s3ObjectPathFromSettings s name = runMaybeT $ do
-    bucket <- MaybeT $ awsBucket s
+s3ObjectPathFromSettings s name = do
+    bucket <- awsBucket s
     return $ bucket ++ "." ++ endpoint ++ "/" ++ name
   where
     endpoint = awsEndpoint s

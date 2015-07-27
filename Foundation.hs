@@ -86,7 +86,6 @@ instance Yesod App where
 -- Request limitations
 --------------------------------------------------------------------------------
 
-    maximumContentLength _ (Just (StockImagesR _)) = Just $ 12 * 1024 * 1024 -- 12mb
     maximumContentLength _ _ = Just $ 2 * 1024 * 1024 -- 2mb
 
 --------------------------------------------------------------------------------

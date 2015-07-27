@@ -3,7 +3,6 @@ module TestFactory where
 import ClassyPrelude
 import Database.Persist
 import Model
-import Model.Types
 import Model.User (createUser)
 
 factoryUser :: ( MonadIO m
